@@ -42,11 +42,62 @@ class Pawn(Piece):
     def get_available_moves(self, board) -> List[Square]:
         current_square = board.find_piece(self)
         if self.player == Player.BLACK:
+            moves = []
+            # square_in_left_diagonal = Square.at(current_square.row - 1, current_square.col - 1)
+            # square_in_right_diagonal = Square.at(current_square.row - 1, current_square.col + 1)
+            if current_square.row == 0:
+                return moves
             square_in_front = Square.at(current_square.row - 1, current_square.col)
-            return [square_in_front]
+            if board.get_piece(square_in_front) is None:
+                moves.append(square_in_front)
+                if current_square.row == 6:
+                    second_square_in_front = Square.at(current_square.row - 2, current_square.col)
+                    if board.get_piece(second_square_in_front) is None:
+                        moves.append(second_square_in_front)
+            # Check diagonal captures
+            for col_offset in [-1, 1]:  # Left and right diagonals
+                diagonal_square = Square.at(current_square.row - 1, current_square.col + col_offset)
+                piece = board.get_piece(diagonal_square)
+                if piece is not None and piece.player != self.player:
+                    moves.append(diagonal_square)
+            # if ((board.get_piece(square_in_left_diagonal) != None) and (board.get_piece(square_in_right_diagonal) == None)):
+            #     if board.get_piece(square_in_left_diagonal).player != self.player:
+            #         return [square_in_left_diagonal]
+            # if ((board.get_piece(square_in_left_diagonal) == None) and (board.get_piece(square_in_right_diagonal) != None)):
+            #     if board.get_piece(square_in_right_diagonal).player != self.player:
+            #         return [square_in_right_diagonal]
+            # if ((board.get_piece(square_in_left_diagonal) != None) and (board.get_piece(square_in_right_diagonal) != None)):
+            #     if board.get_piece(square_in_left_diagonal).player != self.player and board.get_piece(square_in_right_diagonal).player != self.player:
+            #         return [square_in_left_diagonal, square_in_right_diagonal]
+
         else:
+            moves = []
+            # square_in_left_diagonal = Square.at(current_square.row + 1, current_square.col - 1)
+            # square_in_right_diagonal = Square.at(current_square.row + 1, current_square.col + 1)
+            if current_square.row == 7:
+                return moves
             square_in_front = Square.at(current_square.row + 1, current_square.col)
-            return [square_in_front]
+            if board.get_piece(square_in_front) is None:
+                moves.append(square_in_front)
+                if current_square.row == 1:
+                    second_square_in_front = Square.at(current_square.row + 2, current_square.col)
+                    if board.get_piece(second_square_in_front) is None:
+                        moves.append(second_square_in_front)
+            for col_offset in [-1, 1]:
+                diagonal_square = Square.at(current_square.row + 1, current_square.col + col_offset)
+                piece = board.get_piece(diagonal_square)
+                if piece is not None and piece.player != self.player:
+                    moves.append(diagonal_square)
+            # if ((board.get_piece(square_in_left_diagonal) != None) and (board.get_piece(square_in_right_diagonal) == None)):
+            #     if board.get_piece(square_in_left_diagonal).player != self.player:
+            #         return [square_in_left_diagonal]
+            # if ((board.get_piece(square_in_left_diagonal) == None) and (board.get_piece(square_in_right_diagonal) != None)):
+            #     if board.get_piece(square_in_right_diagonal).player != self.player:
+            #         return [square_in_right_diagonal]
+            # if ((board.get_piece(square_in_left_diagonal) != None) and (board.get_piece(square_in_right_diagonal) != None)):
+            #     if board.get_piece(square_in_left_diagonal).player != self.player and board.get_piece(square_in_right_diagonal).player != self.player:
+            #         return [square_in_left_diagonal, square_in_right_diagonal]
+        return moves
 
 
 class Knight(Piece):
